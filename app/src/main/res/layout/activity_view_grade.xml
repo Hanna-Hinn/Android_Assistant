@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#202020"
+    android:padding="15dp"
+    tools:context=".MainActivity"
+    android:id="@+id/subjectGradeMainLayout">
+
+    <TextView
+        android:id="@+id/txtSubjectGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="Total Grade: 0 of (0/100)"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:text="Add grade"
+        android:layout_marginTop="30dp"
+        />
+
+    <EditText
+        android:id="@+id/editGradeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Exam or Assignment..etc"
+        android:textColor="@color/white"
+        android:textColorHint="#AEAEAE"
+        android:textSize="17sp"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Grade"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/editAchievedGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:hint="00"
+                android:textColorHint="@color/white"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Full grade"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/editFullGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:hint="00"
+                android:textColorHint="@color/white"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Full real grade"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/editFullRealGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:hint="00"
+                android:textColorHint="@color/white"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Grade"
+        android:layout_gravity="center"/>
+
+    <ScrollView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/gradesViewsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

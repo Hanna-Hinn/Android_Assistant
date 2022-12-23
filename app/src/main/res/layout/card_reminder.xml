@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/cardRemTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textFontWeight="1000"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:id="@+id/cardRemSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Subject"
+                    android:textFontWeight="1000"
+                    android:textSize="30dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/cardRemDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:textFontWeight="1000"
+                    android:textSize="30dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/cardRemDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textFontWeight="100"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/arrowDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_weight="100"
+                    app:srcCompat="@drawable/ic_downarrow_foreground" />
+
+                <Button
+                    android:id="@+id/remDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Delete"
+                    android:visibility="gone"/>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</RelativeLayout>
