@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".activity_subject_grades"
+    android:background="@color/light_gray"
+    android:id="@+id/activity_subject_grades"
+    >
+
+    <TextView
+        android:id="@+id/txtSubjectName"
+        style="@style/mainTitleStyle"
+        android:text="Subject: Math" />
+
+    <TextView
+        android:id="@+id/txtSubjectTotal"
+        style="@style/mainTitleStyle"
+        android:text="Total: 34 of (45 / 100)"
+        android:layout_below="@+id/txtSubjectName"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gradesRv"
+        android:layout_width="match_parent"
+        android:layout_height="530dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/txtSubjectTotal"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/GradesFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_foreground"
+        android:layout_alignParentEnd="true"
+        android:background="@color/teal_700"
+        android:backgroundTint="@color/teal_700"
+        android:layout_alignParentBottom="true"/>
+
+
+
+</RelativeLayout>

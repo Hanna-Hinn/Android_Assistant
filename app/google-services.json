@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "434390758256",
+    "firebase_url": "https://test-ada92-default-rtdb.firebaseio.com",
+    "project_id": "test-ada92",
+    "storage_bucket": "test-ada92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434390758256:android:c7eb2c1ec9e14c114715b5",
+        "android_client_info": {
+          "package_name": "com.example.ass_activities"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434390758256-g9fk1ugjr0grslkifbu46m3qnn2br8nk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3rTkK92CS_caUv1luwANKxbjBvx6lGP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434390758256-g9fk1ugjr0grslkifbu46m3qnn2br8nk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,11 +5,6 @@ public class Grade {
     private String grade;
     private String realGrade;
 
-    public Grade() {
-        this.title = "";
-        this.grade = "";
-        this.realGrade = "";
-    }
 
     public Grade(String title, String grade, String realGrade) {
         this.title = title;

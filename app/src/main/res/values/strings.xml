@@ -1,3 +1,44 @@
 <resources>
-    <string name="app_name">Ass_Activities</string>
+    <string name="app_name">Student Assistant</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome">Welcome</string>
+    <string name="about_us">This Application was made as a project for the Android course
+        in Birzeit university. The Application was made to help students manage their school or
+        college tasks or reminders.
+    </string>
+
+    <string name="quote_placeholder">loading Quote</string>
+
+    <string name="developers">Team: Hanna, Rami, Ahmad</string>
+    <string name="copyright">Copyright \u00a9 2023</string>
+
+    <string name="title">Title..</string>
+    <string name="details">Details..</string>
+    <string name="title_placeholder">Title placeholder</string>
+    <string name="details_placeholder">Details placeholder</string>
+    <string name="date_placeholder">Date placeholder</string>
+    <string name="btnDeleteString">Delete</string>
+    <string name="btnDoneString">Done</string>
+    <string name="gradePlaceholder">Grade: 76 / 100</string>
+    <string name="realGradePlaceholder">Real Grade: 8 / 10</string>
+
+    <string name="logout">Logout</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register">Do not have an account? Register here.</string>
+    <string name="login">Already Have an account? Login here.</string>
+    <string name="confirm_password">Confirm Password:</string>
+
+    <string name="userEmail">example@example.com</string>
+
 </resources>
