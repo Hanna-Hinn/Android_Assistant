@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:hint="@string/title"
+        style="@style/formTextInputStyle" />
+
+
+    <EditText
+        android:id="@+id/etDetails"
+        android:hint="@string/details"
+        style="@style/formTextInputStyle" />
+
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+<!--    <Button-->
+<!--        android:id="@+id/btnSubmit"-->
+<!--        android:text="Submit"-->
+<!--        style="@style/formButtonStyle" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnCancel"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Cancel"/>-->
+
+</LinearLayout>

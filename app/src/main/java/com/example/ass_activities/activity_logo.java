@@ -1,7 +1,5 @@
 package com.example.ass_activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +8,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class activity_logo extends AppCompatActivity {
 
@@ -36,7 +36,7 @@ public class activity_logo extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(activity_logo.this, MainActivity.class);
+                Intent intent = new Intent(activity_logo.this, login.class);
                 startActivity(intent);
                 finish();
             }

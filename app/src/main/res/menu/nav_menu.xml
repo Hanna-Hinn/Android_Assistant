@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view"
+    >
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/nav_home"
+            android:title="Home"
+            />
+        <item
+            android:id="@+id/nav_todo"
+            android:icon="@drawable/ic_todo_foreground"
+            android:title="Todos"/>
+        <item
+            android:id="@+id/nav_reminder"
+            android:icon="@drawable/ic_reminder_foreground"
+            android:title="Reminder"/>
+        <item
+            android:id="@+id/nav_grade"
+            android:icon="@drawable/ic_grade_foreground"
+            android:title="Grades"/>
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_nav_about"
+            android:title="About"/>
+
+    </group>
+
+    <item
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout_foreground"
+                android:title="Logout"/>
+        </menu>
+    </item>
+
+</menu>
