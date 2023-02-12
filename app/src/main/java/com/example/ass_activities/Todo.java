@@ -1,7 +1,7 @@
 package com.example.ass_activities;
 
 public class Todo {
-    private int id=0;
+    private static int id=0;
     private String title;
     private String details;
     private String date;
@@ -11,6 +11,12 @@ public class Todo {
         this.details = details;
         this.date = date;
         id++;
+    }
+
+    public Todo() {
+        title="";
+        details="";
+        date="";
     }
 
     public String getTitle() {

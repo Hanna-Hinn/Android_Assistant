@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 import static android.widget.Toast.LENGTH_LONG;
 
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,10 +26,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class TodoFragment extends Fragment {
@@ -44,7 +50,9 @@ public class TodoFragment extends Fragment {
 
     private FirebaseDatabase database;
     private DatabaseReference ref;
-    private String userID;
+    private static String userID;
+
+    private static ArrayList<Todo> todos = new ArrayList<>();;
 
 
     @Override
@@ -58,55 +66,80 @@ public class TodoFragment extends Fragment {
 
         setUpDatabase();
 
-        buildDialog();
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    dialog.show();
-            }
-        });
 
         ArrayList<String> titles = new ArrayList<>();
         ArrayList<String> details = new ArrayList<>();
         ArrayList<String> dates = new ArrayList<>();
+        buildDialog();
+
 
 
         //Read the Data from the database
-        ref.child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        new FirebaseDataBaseHelper().readTodos(new FirebaseDataBaseHelper.DataStatus() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "Result: " + task.getResult().getValue().toString());
+            public void TodosIsLoaded(List<Todo> data, List<String> keys) {
+                todos.clear();
+                titles.clear();
+                details.clear();
+                dates.clear();
+                for (Todo x:data) {
+                    todos.add(x);
+                    titles.add(x.getTitle());
+                    details.add(x.getDetails());
+                    dates.add(x.getDate());
                 }
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                ToDoAdapter adapter = new ToDoAdapter(titles, details, dates);
+                recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void ReminderIsLoaded(List<Reminder> data, List<String> keys) {
+            }
+
+            @Override
+            public void GradeIsLoaded(HashMap<String,SubjectGrade> data) {
+
+            }
+
+            @Override
+            public void SubjectGradesIsLoaded(List<Mark> data, List<String> keys) {
+
+            }
+
+        },userID);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
             }
         });
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        ToDoAdapter adapter = new ToDoAdapter(titles, details, dates);
-        recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
-    private void setUpDatabase(){
+
+    private void setUpDatabase() {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("todos");
         SharedPreferences Prefs = getActivity().getSharedPreferences("Auth", MODE_PRIVATE);
-        userID = Prefs.getString("user",null);
+        userID = Prefs.getString("user", null);
     }
 
 
-    public void addTodo(String title, String details, String date){
+
+    public void addTodo(String title, String details, String date) {
         ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
         adapter.addItem(title, details, date);
         //Write the data into the database
-        Todo todo = new Todo(title,details,date);
-        ref.child(userID).child(""+adapter.getItemCount()).child("title").setValue(todo.getTitle());
-        ref.child(userID).child(""+adapter.getItemCount()).child("details").setValue(todo.getDetails());
-        ref.child(userID).child(""+adapter.getItemCount()).child("date").setValue(todo.getDate());
+        Todo todo = new Todo(title, details, date);
+        ref.child(userID).child("" + adapter.getItemCount()).child("title").setValue(todo.getTitle());
+        ref.child(userID).child("" + adapter.getItemCount()).child("details").setValue(todo.getDetails());
+        ref.child(userID).child("" + adapter.getItemCount()).child("date").setValue(todo.getDate());
     }
 
     private void buildDialog() {
@@ -127,10 +160,10 @@ public class TodoFragment extends Fragment {
                 String title = etTitle.getText().toString();
                 String details = etDetails.getText().toString();
 
-                if (validate(title, details)){
+                if (validate(title, details)) {
                     addTodo(title, details, getDate());
 
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "Title and Details can not be empty", LENGTH_LONG).show();
                 }
             }
@@ -144,7 +177,7 @@ public class TodoFragment extends Fragment {
         dialog = builder.create();
     }
 
-    private String getDate(){
+    private String getDate() {
 
         String year = String.valueOf(datePicker.getYear());
         String month = String.valueOf(datePicker.getMonth() + 1);
@@ -153,8 +186,8 @@ public class TodoFragment extends Fragment {
         return "Due Date: " + year + " / " + month + " / " + day;
     }
 
-    private boolean validate(String title, String details){
-        if(title.equals("") || details.equals("")){
+    private boolean validate(String title, String details) {
+        if (title.equals("") || details.equals("")) {
             return false;
         }
         return true;

@@ -34,6 +34,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GradeFragment extends Fragment {
 
@@ -43,7 +45,7 @@ public class GradeFragment extends Fragment {
     private AlertDialog dialog;
     private LinearLayout layout;
 
-    private ArrayList<ViewGrade> viewGrades = new ArrayList<>();
+    private HashMap<String, SubjectGrade> grades = new HashMap<>();
 
     private String intentGrade;
 
@@ -65,17 +67,32 @@ public class GradeFragment extends Fragment {
 
         setUpDatabase();
 
-        //Read the Data from the database
-        ref.child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        buildDialog();
+
+
+        new FirebaseDataBaseHelper().readGrades(new FirebaseDataBaseHelper.DataStatus() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "Result: " + task.getResult().getValue().toString());
+            public void GradeIsLoaded(HashMap<String,SubjectGrade> data) {
+                grades.clear();
+                for(String i: data.keySet()){
+                    grades.put(i,data.get(i));
+                    addCard(i, Float.parseFloat(data.get(i).getTotal()));
                 }
             }
-        });
 
-        buildDialog();
+            @Override
+            public void SubjectGradesIsLoaded(List<Mark> data, List<String> keys) {
+
+            }
+
+            @Override
+            public void TodosIsLoaded(List<Todo> data, List<String> keys) {
+            }
+
+            @Override
+            public void ReminderIsLoaded(List<Reminder> data, List<String> keys) {
+            }
+        },userID);
 
         addGrade.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +107,12 @@ public class GradeFragment extends Fragment {
 
     private void setUpDatabase(){
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("todos");
+        ref = database.getReference("grades");
         SharedPreferences Prefs = getActivity().getSharedPreferences("Auth", MODE_PRIVATE);
         userID = Prefs.getString("user",null);
     }
 
-    private void addGradetoDatabase(){
 
-    }
 
 
     private void buildDialog() {
@@ -111,10 +126,13 @@ public class GradeFragment extends Fragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ViewGrade viewGrade = new ViewGrade(name.getText().toString());
-                        viewGrades.add(viewGrade);
-                        addCard(name.getText().toString(), 0);
-                        ref.child(userID).child(name.getText().toString());
+                        String subject = name.getText().toString();
+                        SubjectGrade marks = new SubjectGrade();
+                        grades.put(subject,marks);
+                        addCard(subject,0);
+
+                        ref.child(userID).child(subject).setValue(new SubjectGrade());
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -126,6 +144,8 @@ public class GradeFragment extends Fragment {
 
         dialog = builder.create();
     }
+
+
 
     private void addCard(String name, float viewGrade) {
         final View view = getLayoutInflater().inflate(R.layout.card_grade, null);
@@ -144,9 +164,9 @@ public class GradeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                for (ViewGrade x : viewGrades) {
-                    if (x.getSubject() == subject.getText().toString()) {
-                        viewGrades.remove(x);
+                for (String x : grades.keySet()) {
+                    if (x == subject.getText().toString()) {
+                        grades.remove(x);
                         break;
                     }
                 }
@@ -159,6 +179,7 @@ public class GradeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), activity_subject_grades.class);
                 intent.putExtra("SUBJECT_NAME", subject.getText().toString());
+                intent.putExtra("TOTAL", grades.get(subject.getText().toString()).getTotal());
                 startActivity(intent);
             }
         });

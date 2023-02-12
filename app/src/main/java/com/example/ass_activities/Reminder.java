@@ -1,7 +1,7 @@
 package com.example.ass_activities;
 
 public class Reminder {
-    private int id=0;
+    private static int id=0;
     private String title;
     private String subject;
     private String details;
@@ -13,6 +13,10 @@ public class Reminder {
         this.details = details;
         this.date = date;
         this.id++;
+    }
+
+    public Reminder() {
+
     }
 
     public String getTitle() {

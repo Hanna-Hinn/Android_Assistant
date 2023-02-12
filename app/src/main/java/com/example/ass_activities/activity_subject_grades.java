@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +18,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class activity_subject_grades extends AppCompatActivity {
     private FloatingActionButton fab;
@@ -26,10 +31,24 @@ public class activity_subject_grades extends AppCompatActivity {
     private TextView txtSubjectName;
     private static TextView txtSubjectTotal;
 
+    private FirebaseDatabase database;
+    private static DatabaseReference ref;
+    private static String userID;
+
+    private static String subject;
+    private static String total;
+    private static Float realFullGrade = Float.valueOf(0);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_grades);
+
+        Intent intent = getIntent();
+        subject = intent.getStringExtra("SUBJECT_NAME");
+        total = intent.getStringExtra("TOTAL");
+
+        setUpDatabase();
 
         setUpViews();
 
@@ -53,11 +72,46 @@ public class activity_subject_grades extends AppCompatActivity {
 
         // Here is the code which suppose to get the saved grades from the database
         // the code has to fill the grades in the above ArrayLists
+        new FirebaseDataBaseHelper().readSubjectGrades(new FirebaseDataBaseHelper.DataStatus() {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            @Override
+            public void SubjectGradesIsLoaded(List<Mark> data, List<String> keys) {
+                titles.clear();
+                grades.clear();
+                realGrades.clear();
+                for(Mark x: data){
+                    titles.add(x.getTitle());
+                    grades.add(x.getGrade());
+                    realGrades.add(x.getReal_grade());
+                    realFullGrade += Float.parseFloat(x.getFull_grade());
+                }
 
-        GradeAdapter adapter = new GradeAdapter(titles, grades, realGrades);
-        recyclerView.setAdapter(adapter);
+                String str = "Total: " +total+ " of ( "+ realFullGrade +" / 100)";
+                txtSubjectTotal.setText(str);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(activity_subject_grades.this));
+
+                GradeAdapter adapter = new GradeAdapter(titles, grades, realGrades);
+                recyclerView.setAdapter(adapter);
+
+
+            }
+            @Override
+            public void TodosIsLoaded(List<Todo> data, List<String> keys) {
+
+            }
+
+            @Override
+            public void ReminderIsLoaded(List<Reminder> data, List<String> keys) {
+
+            }
+
+            @Override
+            public void GradeIsLoaded(HashMap<String, SubjectGrade> data) {
+
+            }
+        },userID,subject);
+
 
     }
 
@@ -66,11 +120,15 @@ public class activity_subject_grades extends AppCompatActivity {
         recyclerView = findViewById(R.id.gradesRv);
         txtSubjectName = findViewById(R.id.txtSubjectName);
         txtSubjectTotal = findViewById(R.id.txtSubjectTotal);
-
-        // when we implement the database,` we have to delete these 2 lines of code
-        String total = "Total: 0 of (0 / 100)";
-        txtSubjectTotal.setText(total);
     }
+
+    private void setUpDatabase(){
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("grades");
+        SharedPreferences Prefs = getSharedPreferences("Auth", MODE_PRIVATE);
+        userID = Prefs.getString("user",null);
+    }
+
 
     public void addGrade(String title, String grade, String fullGrade, String realGrade, String realFullGrade) {
         GradeAdapter adapter = (GradeAdapter) recyclerView.getAdapter();
@@ -80,10 +138,17 @@ public class activity_subject_grades extends AppCompatActivity {
 
         adapter.addItem(title, finalGrade, finalRealGrade);
         String total = txtSubjectTotal.getText().toString();
+
+        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("title").setValue(title);
+        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("grade").setValue(grade);
+        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("full_grade").setValue(fullGrade);
+        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("real_grade").setValue(realGrade);
+        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("real_full").setValue(realFullGrade);
+
         updateTotal(realGrade, realFullGrade, true);
     }
 
-    public static void updateTotal(String realGrade, String realFullGrade, boolean isAdd) {
+    static void updateTotal(String realGrade, String realFullGrade, boolean isAdd) {
         int numRealGrade = Integer.parseInt(realGrade);
         int numRealFullGrade = Integer.parseInt(realFullGrade);
 
@@ -104,10 +169,13 @@ public class activity_subject_grades extends AppCompatActivity {
         }
 
 
+
         String strNewTotalGrade = String.valueOf(newTotalGrade);
         String strNewTotalFullGrade = String.valueOf(newTotalFullGrade);
 
         String newTotal = "Total: " + strNewTotalGrade + " of (" + strNewTotalFullGrade + " / 100)";
+
+        ref.child(userID).child(subject).child("total").setValue(strNewTotalGrade);
 
         txtSubjectTotal.setText(newTotal);
     }

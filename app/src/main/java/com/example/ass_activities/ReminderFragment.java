@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +43,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class ReminderFragment extends Fragment {
@@ -84,18 +88,36 @@ public class ReminderFragment extends Fragment {
         addReminder = rootView.findViewById(R.id.addReminder);
         layout = rootView.findViewById(R.id.reminderContainer);
 
-
         buildDialog();
 
+
         //Read the Data from the database
-        ref.child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        new FirebaseDataBaseHelper().readReminder(new FirebaseDataBaseHelper.DataStatus() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "Result: " + task.getResult().getValue().toString());
-                }
+            public void TodosIsLoaded(List<Todo> data, List<String> keys) {
+
             }
-        });
+
+            @Override
+            public void ReminderIsLoaded(List<Reminder> data, List<String> keys) {
+                reminders.clear();
+                for (Reminder x:data) {
+                    reminders.add(x);
+                    addCard(x.getTitle(),x.getSubject(),x.getDetails(),x.getDate());
+                }
+
+            }
+
+            @Override
+            public void GradeIsLoaded(HashMap<String,SubjectGrade> data) {
+
+            }
+
+            @Override
+            public void SubjectGradesIsLoaded(List<Mark> data, List<String> keys) {
+
+            }
+        },userID);
 
         addReminder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +125,6 @@ public class ReminderFragment extends Fragment {
                 dialog.show();
             }
         });
-
 
         return rootView;
     }
@@ -224,6 +245,18 @@ public class ReminderFragment extends Fragment {
                 Reminder reminder = new Reminder(cardTitle.getText().toString(),cardSubject.getText().toString(), cardDetails.getText().toString(), cardDate.getText().toString());
                 for (Reminder x : reminders) {
                     if(x.getTitle() == reminder.getTitle() && x.getDate() == reminder.getDate() && x.getDetails() == reminder.getDetails() && x.getSubject() == reminder.getSubject()){
+//                        Query reminderQuery = ref.child(""+x.getId());
+//                        reminderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                snapshot.getRef().removeValue();
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
                         reminders.remove(x);
                         break;
                     }
