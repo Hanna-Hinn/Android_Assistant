@@ -48,8 +48,8 @@ public class TodoFragment extends Fragment {
     private EditText etTitle, etDetails;
     private DatePicker datePicker;
 
-    private FirebaseDatabase database;
-    private DatabaseReference ref;
+    private static FirebaseDatabase database;
+    private static DatabaseReference ref;
     private static String userID;
 
     private static ArrayList<Todo> todos = new ArrayList<>();;
@@ -130,7 +130,37 @@ public class TodoFragment extends Fragment {
         userID = Prefs.getString("user", null);
     }
 
+    public static void removeFromDatabase(int position){
 
+
+        ref = database.getReference("todos/" + userID);
+
+
+        // Add a listener to retrieve the list of child nodes
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int i = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (i == position) {
+                        // This is the node you want to delete
+                        snapshot.getRef().removeValue();
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle the error
+            }
+        });
+
+        ref = database.getReference("todos");
+
+    }
 
     public void addTodo(String title, String details, String date) {
         ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();

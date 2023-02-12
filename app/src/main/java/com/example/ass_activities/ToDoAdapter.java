@@ -87,6 +87,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder>{
         titles.remove(position);
         detailss.remove(position);
         dates.remove(position);
+        TodoFragment.removeFromDatabase(position);
         notifyDataSetChanged();
     }
 

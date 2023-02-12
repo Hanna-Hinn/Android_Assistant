@@ -257,6 +257,8 @@ public class ReminderFragment extends Fragment {
 //
 //                            }
 //                        });
+
+                        deleteFromDatabase(x);
                         reminders.remove(x);
                         break;
                     }
@@ -308,4 +310,43 @@ public class ReminderFragment extends Fragment {
         }
     }
 
+    private void deleteFromDatabase(Reminder reminder){
+
+        ref = database.getReference("reminders/" + userID);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String[] values = formatReminder(snapshot.getValue().toString());
+                    if (reminder.getDate().equals(values[0]) && reminder.getSubject().equals(values[1]) && reminder.getDetails().equals(values[2]) && reminder.getTitle().equals(values[3])) {
+                        // This is the node you want to delete
+                        snapshot.getRef().removeValue();
+                        break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle the error
+            }
+        });
+
+        ref = database.getReference("reminders");
+    }
+
+    private String[] formatReminder(String src){
+        src = src.replaceAll("\\{", "");
+        src = src.replaceAll("\\}", "");
+
+        String[] parts = src.split(",");
+        for(int i = 0; i < parts.length; i++){
+            parts[i] = parts[i].split("=")[1];
+        }
+
+        return parts;
+    }
 }

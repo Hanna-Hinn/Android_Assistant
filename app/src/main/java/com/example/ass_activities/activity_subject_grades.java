@@ -12,14 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +32,10 @@ import java.util.List;
 public class activity_subject_grades extends AppCompatActivity {
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
-    private TextView txtSubjectName;
+    private static TextView txtSubjectName;
     private static TextView txtSubjectTotal;
 
-    private FirebaseDatabase database;
+    private static FirebaseDatabase database;
     private static DatabaseReference ref;
     private static String userID;
 
@@ -195,6 +199,38 @@ public class activity_subject_grades extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+    }
+
+    public static void deleteFromDatabase(int position){
+        Log.d("subjectName", txtSubjectName.getText().toString());
+        String subjectName = txtSubjectName.getText().toString().split(":")[1].split(" ")[1];
+        ref = database.getReference("grades/" + userID + "/" + subjectName + "/marks");
+
+
+        // Add a listener to retrieve the list of child nodes
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int i = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (i == position) {
+                        // This is the node you want to delete
+                        Log.d("test", snapshot.getKey().toString());
+                        snapshot.getRef().removeValue();
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle the error
+            }
+        });
+
+        ref = database.getReference("grades");
     }
 }
 

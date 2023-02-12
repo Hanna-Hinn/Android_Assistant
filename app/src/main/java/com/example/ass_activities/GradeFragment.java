@@ -27,8 +27,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -166,6 +168,7 @@ public class GradeFragment extends Fragment {
 
                 for (String x : grades.keySet()) {
                     if (x == subject.getText().toString()) {
+                        deleteFromDatabase(x);
                         grades.remove(x);
                         break;
                     }
@@ -188,7 +191,32 @@ public class GradeFragment extends Fragment {
         layout.addView(view);
     }
 
+    private void deleteFromDatabase(String name){
+        ref = database.getReference("grades/" + userID);
 
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    if (name.equals(snapshot.getKey().toString())) {
+                        // This is the node you want to delete
+                        snapshot.getRef().removeValue();
+                        break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle the error
+            }
+        });
+
+        ref = database.getReference("grades");
+    }
 
 
 

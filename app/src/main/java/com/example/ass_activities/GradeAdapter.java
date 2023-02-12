@@ -63,11 +63,11 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder>{
         btnDeleteGrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String realGrade = realGrades.get(currentPosition).split("/")[0].split(" ")[0];
-                String realFullGrade = realGrades.get(currentPosition).split("/")[1].split(" ")[1];
+//                String realGrade = realGrades.get(currentPosition).split("/")[0].split(" ")[0];
+//                String realFullGrade = realGrades.get(currentPosition).split("/")[1].split(" ")[1];
 
                 removeItem(currentPosition);
-                activity_subject_grades.updateTotal(realGrade, realFullGrade, false);
+//                activity_subject_grades.updateTotal(realGrade, realFullGrade, false);
             }
         });
 
@@ -90,6 +90,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder>{
         titles.remove(position);
         grades.remove(position);
         realGrades.remove(position);
+        activity_subject_grades.deleteFromDatabase(position);
         notifyDataSetChanged();
     }
 
