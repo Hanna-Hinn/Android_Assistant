@@ -1,62 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:text="Title:"
-        style="@style/formLabelStyle" />
-
-    <EditText
-        android:id="@+id/etGradeTitle"
-        style="@style/formTextInputStyle"
-        android:hint="Midterm, Quiz, Assignment..etc"/>
-
-    <TextView
-        style="@style/formLabelStyle"
-        android:text="Grade:"
-        android:layout_marginTop="25dp"/>
-
-    <EditText
-        android:id="@+id/etGrade"
-        android:hint="00"
-        style="@style/formNumberInputStyle" />
-
-    <TextView
-        style="@style/formLabelStyle"
-        android:text="Full grade:"
-        android:layout_marginTop="25dp"/>
-
-    <EditText
-        android:id="@+id/etFullGrade"
-        style="@style/formNumberInputStyle"
-        android:hint="00"/>
-
-    <TextView
-        style="@style/formLabelStyle"
-        android:text="Real full grade:"
-        android:layout_marginTop="25dp"/>
-
-    <EditText
-        android:id="@+id/etRealFullGrade"
-        style="@style/formNumberInputStyle"
-        android:hint="00"/>
-
-    <Button
-        android:id="@+id/btnGradeSubmit"
-        style="@style/formButtonStyle"
-        android:layout_marginTop="30dp"
-        android:text="Submit"/>
-
-    <Button
-        android:id="@+id/btnGradeCancel"
-        style="@style/formButtonStyle"
-        android:layout_marginTop="5dp"
-        android:text="Cancel"/>
+    android:layout_height="match_parent">
 
 
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical">
+
+        <TextView
+            style="@style/formLabelStyle"
+            android:text="Title:" />
+
+        <EditText
+            android:id="@+id/etGradeTitle"
+            style="@style/formTextInputStyle"
+            android:hint="Midterm, Quiz, Assignment..etc" />
+
+        <TextView
+            style="@style/formLabelStyle"
+            android:layout_marginTop="25dp"
+            android:text="Grade:" />
+
+        <EditText
+            android:id="@+id/etGrade"
+            style="@style/formNumberInputStyle"
+            android:hint="00" />
+
+        <TextView
+            style="@style/formLabelStyle"
+            android:layout_marginTop="25dp"
+            android:text="Full grade:" />
+
+        <EditText
+            android:id="@+id/etFullGrade"
+            style="@style/formNumberInputStyle"
+            android:hint="00" />
+
+        <TextView
+            style="@style/formLabelStyle"
+            android:layout_marginTop="25dp"
+            android:text="Real full grade:" />
+
+        <EditText
+            android:id="@+id/etRealFullGrade"
+            style="@style/formNumberInputStyle"
+            android:hint="00" />
+
+        <Button
+            android:id="@+id/btnGradeSubmit"
+            style="@style/formButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="Submit" />
+
+        <Button
+            android:id="@+id/btnGradeCancel"
+            style="@style/formButtonStyle"
+            android:layout_marginTop="5dp"
+            android:text="Cancel" />
 
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

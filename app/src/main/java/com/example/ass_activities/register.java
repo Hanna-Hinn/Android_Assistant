@@ -88,7 +88,7 @@ public class register extends AppCompatActivity {
     private void performRegister() {
         String email = register_username.getText().toString();
         String pass = register_password.getText().toString();
-        String confirm = register_password.getText().toString();
+        String confirm = confirm_password.getText().toString();
 
         if (validateInputs(email, pass, confirm)) {
             progressDialog.setMessage("Please Wait until the Process is finished");
@@ -147,7 +147,7 @@ public class register extends AppCompatActivity {
             register_password.setBackgroundResource(R.drawable.error);
 //            Toast.makeText(this, "InValid Password, Please Try Again", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (confirm.isEmpty() || confirm.compareTo(pass) != 0) {
+        } else if (confirm.isEmpty() || !pass.equals(confirm)) {
             confirm_password.setError("Password Does not match");
             confirm_password.setBackgroundResource(R.drawable.error);
 //            Toast.makeText(this, "InValid Password, Please Try Again", Toast.LENGTH_SHORT).show();

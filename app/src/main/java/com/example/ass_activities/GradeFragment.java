@@ -76,6 +76,7 @@ public class GradeFragment extends Fragment {
             @Override
             public void GradeIsLoaded(HashMap<String,SubjectGrade> data) {
                 grades.clear();
+                layout.removeAllViews();
                 for(String i: data.keySet()){
                     grades.put(i,data.get(i));
                     addCard(i, Float.parseFloat(data.get(i).getTotal()));
@@ -131,7 +132,6 @@ public class GradeFragment extends Fragment {
                         String subject = name.getText().toString();
                         SubjectGrade marks = new SubjectGrade();
                         grades.put(subject,marks);
-                        addCard(subject,0);
 
                         ref.child(userID).child(subject).setValue(new SubjectGrade());
 

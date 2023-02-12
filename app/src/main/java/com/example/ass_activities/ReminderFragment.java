@@ -78,6 +78,7 @@ public class ReminderFragment extends Fragment {
     private DatabaseReference ref;
     private String userID;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,15 +102,16 @@ public class ReminderFragment extends Fragment {
             @Override
             public void ReminderIsLoaded(List<Reminder> data, List<String> keys) {
                 reminders.clear();
-                for (Reminder x:data) {
+                layout.removeAllViews();
+                for (Reminder x : data) {
                     reminders.add(x);
-                    addCard(x.getTitle(),x.getSubject(),x.getDetails(),x.getDate());
+                    addCard(x.getTitle(), x.getSubject(), x.getDetails(), x.getDate());
                 }
 
             }
 
             @Override
-            public void GradeIsLoaded(HashMap<String,SubjectGrade> data) {
+            public void GradeIsLoaded(HashMap<String, SubjectGrade> data) {
 
             }
 
@@ -117,7 +119,7 @@ public class ReminderFragment extends Fragment {
             public void SubjectGradesIsLoaded(List<Mark> data, List<String> keys) {
 
             }
-        },userID);
+        }, userID);
 
         addReminder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,11 +131,11 @@ public class ReminderFragment extends Fragment {
         return rootView;
     }
 
-    private void setUpDatabase(){
+    private void setUpDatabase() {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("reminders");
         SharedPreferences Prefs = getActivity().getSharedPreferences("Auth", MODE_PRIVATE);
-        userID = Prefs.getString("user",null);
+        userID = Prefs.getString("user", null);
     }
 
 
@@ -178,9 +180,9 @@ public class ReminderFragment extends Fragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Reminder reminder = new Reminder(title.getText().toString(),subject.getText().toString(), details.getText().toString(), datePickerBtn.getText().toString());
-                        addToDatabase(reminder);
+                        Reminder reminder = new Reminder(title.getText().toString(), subject.getText().toString(), details.getText().toString(), datePickerBtn.getText().toString());
                         reminders.add(reminder);
+                        addToDatabase(reminder);
                         addCard(title.getText().toString(), subject.getText().toString(), details.getText().toString(), datePickerBtn.getText().toString());
                     }
                 })
@@ -196,7 +198,8 @@ public class ReminderFragment extends Fragment {
     }
 
     //Write into the database
-    private void addToDatabase(Reminder obj){
+    private void addToDatabase(Reminder obj) {
+        ref = database.getReference("reminders");
         ref.child(userID).child(""+obj.getId()).child("title").setValue(obj.getTitle());
         ref.child(userID).child(""+obj.getId()).child("subject").setValue(obj.getSubject());
         ref.child(userID).child(""+obj.getId()).child("details").setValue(obj.getDetails());
@@ -242,22 +245,9 @@ public class ReminderFragment extends Fragment {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Reminder reminder = new Reminder(cardTitle.getText().toString(),cardSubject.getText().toString(), cardDetails.getText().toString(), cardDate.getText().toString());
+                Reminder reminder = new Reminder(cardTitle.getText().toString(), cardSubject.getText().toString(), cardDetails.getText().toString(), cardDate.getText().toString());
                 for (Reminder x : reminders) {
-                    if(x.getTitle() == reminder.getTitle() && x.getDate() == reminder.getDate() && x.getDetails() == reminder.getDetails() && x.getSubject() == reminder.getSubject()){
-//                        Query reminderQuery = ref.child(""+x.getId());
-//                        reminderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                snapshot.getRef().removeValue();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
-
+                    if (x.getTitle() == reminder.getTitle() && x.getDate() == reminder.getDate() && x.getDetails() == reminder.getDetails() && x.getSubject() == reminder.getSubject()) {
                         deleteFromDatabase(x);
                         reminders.remove(x);
                         break;
@@ -310,7 +300,7 @@ public class ReminderFragment extends Fragment {
         }
     }
 
-    private void deleteFromDatabase(Reminder reminder){
+    private void deleteFromDatabase(Reminder reminder) {
 
         ref = database.getReference("reminders/" + userID);
 
@@ -338,12 +328,12 @@ public class ReminderFragment extends Fragment {
         ref = database.getReference("reminders");
     }
 
-    private String[] formatReminder(String src){
+    private String[] formatReminder(String src) {
         src = src.replaceAll("\\{", "");
         src = src.replaceAll("\\}", "");
 
         String[] parts = src.split(",");
-        for(int i = 0; i < parts.length; i++){
+        for (int i = 0; i < parts.length; i++) {
             parts[i] = parts[i].split("=")[1];
         }
 

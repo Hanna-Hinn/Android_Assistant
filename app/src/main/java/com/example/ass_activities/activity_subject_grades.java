@@ -1,5 +1,7 @@
 package com.example.ass_activities;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +43,7 @@ public class activity_subject_grades extends AppCompatActivity {
 
     private static String subject;
     private static String total;
-    private static Float realFullGrade = Float.valueOf(0);
+    private static int totalFull = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class activity_subject_grades extends AppCompatActivity {
         setUpDatabase();
 
         setUpViews();
+
+        txtSubjectName.setText("Subject: " + subject);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -83,14 +87,14 @@ public class activity_subject_grades extends AppCompatActivity {
                 titles.clear();
                 grades.clear();
                 realGrades.clear();
-                for(Mark x: data){
+                for (Mark x : data) {
                     titles.add(x.getTitle());
-                    grades.add(x.getGrade());
-                    realGrades.add(x.getReal_grade());
-                    realFullGrade += Float.parseFloat(x.getFull_grade());
+                    grades.add(x.getGrade() + " / " + x.getFull_grade());
+                    realGrades.add(x.getReal_grade() + " / " + x.getReal_full());
+                    totalFull += Integer.parseInt(x.getReal_full());
                 }
 
-                String str = "Total: " +total+ " of ( "+ realFullGrade +" / 100)";
+                String str = "Total: " + total + " of (" + totalFull + " / 100)";
                 txtSubjectTotal.setText(str);
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(activity_subject_grades.this));
@@ -100,6 +104,7 @@ public class activity_subject_grades extends AppCompatActivity {
 
 
             }
+
             @Override
             public void TodosIsLoaded(List<Todo> data, List<String> keys) {
 
@@ -114,7 +119,7 @@ public class activity_subject_grades extends AppCompatActivity {
             public void GradeIsLoaded(HashMap<String, SubjectGrade> data) {
 
             }
-        },userID,subject);
+        }, userID, subject);
 
 
     }
@@ -126,11 +131,11 @@ public class activity_subject_grades extends AppCompatActivity {
         txtSubjectTotal = findViewById(R.id.txtSubjectTotal);
     }
 
-    private void setUpDatabase(){
+    private void setUpDatabase() {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("grades");
         SharedPreferences Prefs = getSharedPreferences("Auth", MODE_PRIVATE);
-        userID = Prefs.getString("user",null);
+        userID = Prefs.getString("user", null);
     }
 
 
@@ -143,11 +148,11 @@ public class activity_subject_grades extends AppCompatActivity {
         adapter.addItem(title, finalGrade, finalRealGrade);
         String total = txtSubjectTotal.getText().toString();
 
-        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("title").setValue(title);
-        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("grade").setValue(grade);
-        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("full_grade").setValue(fullGrade);
-        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("real_grade").setValue(realGrade);
-        ref.child(userID).child(subject).child("marks").child(""+adapter.getItemCount()).child("real_full").setValue(realFullGrade);
+        ref.child(userID).child(subject).child("marks").child("" + adapter.getItemCount()).child("title").setValue(title);
+        ref.child(userID).child(subject).child("marks").child("" + adapter.getItemCount()).child("grade").setValue(grade);
+        ref.child(userID).child(subject).child("marks").child("" + adapter.getItemCount()).child("full_grade").setValue(fullGrade);
+        ref.child(userID).child(subject).child("marks").child("" + adapter.getItemCount()).child("real_grade").setValue(realGrade);
+        ref.child(userID).child(subject).child("marks").child("" + adapter.getItemCount()).child("real_full").setValue(realFullGrade);
 
         updateTotal(realGrade, realFullGrade, true);
     }
@@ -173,7 +178,6 @@ public class activity_subject_grades extends AppCompatActivity {
         }
 
 
-
         String strNewTotalGrade = String.valueOf(newTotalGrade);
         String strNewTotalFullGrade = String.valueOf(newTotalFullGrade);
 
@@ -194,14 +198,14 @@ public class activity_subject_grades extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(fragmentManager.getBackStackEntryCount() > 0){
+        if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
 
-    public static void deleteFromDatabase(int position){
+    public static void deleteFromDatabase(int position) {
 
         String subjectName = txtSubjectName.getText().toString().split(":")[1].split(" ")[1];
         ref = database.getReference("grades/" + userID + "/" + subjectName + "/marks");
@@ -216,12 +220,17 @@ public class activity_subject_grades extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     if (i == position) {
                         // This is the node you want to delete
-                        Log.d("test", snapshot.getKey().toString());
+                        total = String.valueOf(Integer.parseInt(total)- Integer.parseInt((String) snapshot.child("real_grade").getValue()));
+                        totalFull = (totalFull)- Integer.parseInt((String) snapshot.child("real_full").getValue());
                         snapshot.getRef().removeValue();
+
                         break;
                     }
                     i++;
                 }
+                ref = database.getReference("grades/" + userID + "/" + subjectName);
+                ref.child("total").setValue(total);
+//                ref = database.getReference("grades/" + userID + "/" + subjectName + "/marks");
             }
 
             @Override

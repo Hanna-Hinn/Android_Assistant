@@ -52,13 +52,6 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder>{
 
         final int currentPosition = position;
 
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                titles.set(currentPosition, "Hello");
-                notifyDataSetChanged();
-            }
-        });
 
         btnDeleteGrade.setOnClickListener(new View.OnClickListener() {
             @Override

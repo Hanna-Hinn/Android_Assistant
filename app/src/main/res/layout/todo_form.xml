@@ -1,38 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
 
-
-    <EditText
-        android:id="@+id/etTitle"
-        android:hint="@string/title"
-        style="@style/formTextInputStyle" />
-
-
-    <EditText
-        android:id="@+id/etDetails"
-        android:hint="@string/details"
-        style="@style/formTextInputStyle" />
-
-
-    <DatePicker
-        android:id="@+id/datePicker"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical">
 
 
-<!--    <Button-->
-<!--        android:id="@+id/btnSubmit"-->
-<!--        android:text="Submit"-->
-<!--        style="@style/formButtonStyle" />-->
+        <EditText
+            android:id="@+id/etTitle"
+            style="@style/formTextInputStyle"
+            android:hint="@string/title" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnCancel"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Cancel"/>-->
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/etDetails"
+            style="@style/formTextInputStyle"
+            android:hint="@string/details" />
+
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+</ScrollView>

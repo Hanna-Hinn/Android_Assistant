@@ -12,11 +12,11 @@ public class Reminder {
         this.subject = subject;
         this.details = details;
         this.date = date;
-        this.id++;
+        id++;
     }
 
     public Reminder() {
-
+//        id++;
     }
 
     public String getTitle() {

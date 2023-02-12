@@ -12,7 +12,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -27,6 +30,8 @@
             android:layout_height="match_parent"
             android:id="@+id/fragment_container"
             android:background="@color/light_gray"
+            android:scrollbars="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
             />
 
     </LinearLayout>
