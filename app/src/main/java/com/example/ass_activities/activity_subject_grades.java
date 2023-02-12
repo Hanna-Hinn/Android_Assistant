@@ -202,7 +202,7 @@ public class activity_subject_grades extends AppCompatActivity {
     }
 
     public static void deleteFromDatabase(int position){
-        Log.d("subjectName", txtSubjectName.getText().toString());
+
         String subjectName = txtSubjectName.getText().toString().split(":")[1].split(" ")[1];
         ref = database.getReference("grades/" + userID + "/" + subjectName + "/marks");
 

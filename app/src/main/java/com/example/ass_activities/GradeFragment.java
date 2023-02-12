@@ -181,6 +181,8 @@ public class GradeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), activity_subject_grades.class);
+//                Log.d("intentSubjectName", subject.getText().toString());
+//                Log.d("intentSubjectTotal", grades.get(subject.getText().toString()).)
                 intent.putExtra("SUBJECT_NAME", subject.getText().toString());
                 intent.putExtra("TOTAL", grades.get(subject.getText().toString()).getTotal());
                 startActivity(intent);
