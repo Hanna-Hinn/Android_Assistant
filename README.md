@@ -6,6 +6,9 @@ This is a Student Helper Applications. That will help students to manage their D
 
 We have used FireBase as our Backend Services.
 
+Notes: 1.) In Splash Screen Animations where involved
+       2.) The device i used for testing was OPPO device who did not support the font family that used to beautify the Activity for the user. 
+
 
 Login Activity:
 ![Screenshot_2023-02-20-16-59-31-95_bff0eb0772e7c6396402b8dc55e6f8a8](https://user-images.githubusercontent.com/77826684/220140987-069fd1ee-cdc9-4400-93db-0dd6fa208be2.jpg)
